@@ -31,10 +31,10 @@ public class BookShelfControllers {
     }
 
     //Придумать как добавить уведомление для пользователя о не корректном заполнении полей
-    //необходимо поменять логику на: дать возможность сохранять записи даже по 1 заполненому полю
+    //Если ввести буквы в поле size выдает ошибку и переводит на пустую страницу - устранить
     @PostMapping("/save")
     public String saveBook(Book book) {
-        if (book.getAuthor().equals("") || book.getTitle().equals("") || book.getSize() == null) {
+        if (book.getAuthor().equals("") && book.getTitle().equals("") && book.getSize() == null) {
             logger.info("cannot add book");
             return "redirect:/books/shelf";
         } else {
@@ -45,7 +45,7 @@ public class BookShelfControllers {
     }
 
     //Придумать как добавить уведомление для пользователя о не корректном заполнении полей
-    @PostMapping("/remove")
+    @PostMapping("/removeByID")
     public String removeBook(@RequestParam(value = "bookIdToRemove") Integer bookIdToRemove) {
         if (bookService.removeBookById(bookIdToRemove)) {
             logger.info("remove book");
@@ -56,4 +56,17 @@ public class BookShelfControllers {
         }
     }
 
+    //Реализовать обработку для post запросов на удаление book по author, title, size.
+    //Сделать так что бы удалял все записи а не одну
+    @PostMapping("/removeByAuthor")
+    public String removeBookAuthor(@RequestParam(value = "bookAuthorToRemove") String bookAuthorToRemove) {
+        if (bookService.removeBookByAuthor(bookAuthorToRemove)) {
+            logger.info("remove book");
+            return "redirect:/books/shelf";
+        } else {
+            logger.info("cannot remove book");
+            return "redirect:/books/shelf";
+        }
+    }
+    //Можно реализовать ввод данных для удаления в одно поле, но оставить все имеющиеся кнопки для удаления.
 }

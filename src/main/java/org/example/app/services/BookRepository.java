@@ -12,6 +12,8 @@ public class BookRepository<T> implements ProjectRepository<Book> {
     private final Logger logger = Logger.getLogger(BookRepository.class);
     private final List<Book> repo = new ArrayList<>();
 
+
+    //Понять для чгео данный метод, ведь в параметрах и так создается список...
     @Override
     public List<Book> retreiveAll() {
         return new ArrayList<>(repo);
@@ -27,11 +29,32 @@ public class BookRepository<T> implements ProjectRepository<Book> {
     @Override
     public boolean removeItemById(Integer bookIdToRemove) {
         for (Book book : retreiveAll()) {
-            if(book.getId().equals(bookIdToRemove)){
-                logger.info("remove book completed: " + book);
+            if (book.getId().equals(bookIdToRemove)) {
+                logger.info("remove book by id completed: " + book);
                 return repo.remove(book);
             }
         }
+        return false;
+    }
+
+    @Override
+    public boolean removeByAuthor(String bookAuthorToRemove) {
+        for (Book book : retreiveAll()) {
+            if (book.getAuthor().equals(bookAuthorToRemove)) {
+                logger.info("remove book by author completed: " + book);
+                return repo.remove(book);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeByTitle(String bookTitleToRemove) {
+        return false;
+    }
+
+    @Override
+    public boolean removeBySize(Integer bookSizeToRemove) {
         return false;
     }
 }
