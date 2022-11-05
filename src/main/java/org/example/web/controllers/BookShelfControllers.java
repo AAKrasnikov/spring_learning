@@ -56,7 +56,6 @@ public class BookShelfControllers {
         }
     }
 
-    //Сделать так что бы удалял все записи а не одну
     @PostMapping("/removeByAuthor")
     public String removeBookAuthor(@RequestParam(value = "bookAuthorToRemove") String bookAuthorToRemove) {
         if (bookService.removeBookByAuthor(bookAuthorToRemove)) {

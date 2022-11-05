@@ -29,6 +29,7 @@ public class LoginController {
         return "login_page";
     }
 
+    //Придумать как создать уведомление для пользователя о неправильном вводе пароля
     @PostMapping("/auth")
     public String authenticate(LoginFrom loginFrom) {
         if(loginService.authenticate(loginFrom)) {
