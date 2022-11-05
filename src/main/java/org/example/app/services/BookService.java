@@ -32,10 +32,10 @@ public class BookService {
     }
 
     public boolean removeBookByTitle(String bookTitleToRemove) {
-        return false;
+        return bookRepo.removeByTitle(bookTitleToRemove);
     }
 
-    public boolean removeBookBySize(String bookSizeToRemove) {
-        return false;
+    public boolean removeBookBySize(Integer bookSizeToRemove) {
+        return bookRepo.removeBySize(bookSizeToRemove);
     }
 }

@@ -56,11 +56,32 @@ public class BookShelfControllers {
         }
     }
 
-    //Реализовать обработку для post запросов на удаление book по author, title, size.
     //Сделать так что бы удалял все записи а не одну
     @PostMapping("/removeByAuthor")
     public String removeBookAuthor(@RequestParam(value = "bookAuthorToRemove") String bookAuthorToRemove) {
         if (bookService.removeBookByAuthor(bookAuthorToRemove)) {
+            logger.info("remove book");
+            return "redirect:/books/shelf";
+        } else {
+            logger.info("cannot remove book");
+            return "redirect:/books/shelf";
+        }
+    }
+
+    @PostMapping("/removeByTitle")
+    public String removeBookTitle(@RequestParam(value = "bookTitleToRemove") String bookTitleToRemove) {
+        if (bookService.removeBookByTitle(bookTitleToRemove)) {
+            logger.info("remove book");
+            return "redirect:/books/shelf";
+        } else {
+            logger.info("cannot remove book");
+            return "redirect:/books/shelf";
+        }
+    }
+
+    @PostMapping("/removeBySize")
+    public String removeBookSize(@RequestParam(value = "bookSizeToRemove") Integer bookSizeToRemove) {
+        if (bookService.removeBookBySize(bookSizeToRemove)) {
             logger.info("remove book");
             return "redirect:/books/shelf";
         } else {

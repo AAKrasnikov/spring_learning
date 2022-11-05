@@ -25,7 +25,7 @@ public class BookRepository<T> implements ProjectRepository<Book> {
         logger.info("store new book: " + book);
         repo.add(book);
     }
-
+    //При организации удаления по 1 полю и наличии всех текущих кнопок, можно попробовать сокраить кол-во методов удаления.
     @Override
     public boolean removeItemById(Integer bookIdToRemove) {
         for (Book book : retreiveAll()) {
@@ -39,22 +39,52 @@ public class BookRepository<T> implements ProjectRepository<Book> {
 
     @Override
     public boolean removeByAuthor(String bookAuthorToRemove) {
+        int count = 0;
         for (Book book : retreiveAll()) {
             if (book.getAuthor().equals(bookAuthorToRemove)) {
-                logger.info("remove book by author completed: " + book);
-                return repo.remove(book);
+                repo.remove(book);
+                count ++;
             }
         }
-        return false;
+        if (count > 0) {
+            logger.info("remove book by author completed: count = " + count);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean removeByTitle(String bookTitleToRemove) {
-        return false;
+        int count = 0;
+        for (Book book : retreiveAll()) {
+            if (book.getTitle().equals(bookTitleToRemove)) {
+                repo.remove(book);
+                count++;
+            }
+        }
+        if (count > 0) {
+            logger.info("remove book by author completed: count = " + count);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean removeBySize(Integer bookSizeToRemove) {
-        return false;
+        int count = 0;
+        for (Book book : retreiveAll()) {
+            if (book.getSize().equals(bookSizeToRemove)) {
+                repo.remove(book);
+                count++;
+            }
+        }
+        if (count > 0) {
+            logger.info("remove book by author completed: count = " + count);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
