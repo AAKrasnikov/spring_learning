@@ -41,7 +41,7 @@ public class BookRepository<T> implements ProjectRepository<Book> {
     public boolean removeByAuthor(String bookAuthorToRemove) {
         int count = 0;
         for (Book book : retreiveAll()) {
-            if (book.getAuthor().equals(bookAuthorToRemove)) {
+            if (book.getAuthor().matches(bookAuthorToRemove)) {
                 repo.remove(book);
                 count ++;
             }
@@ -58,7 +58,7 @@ public class BookRepository<T> implements ProjectRepository<Book> {
     public boolean removeByTitle(String bookTitleToRemove) {
         int count = 0;
         for (Book book : retreiveAll()) {
-            if (book.getTitle().equals(bookTitleToRemove)) {
+            if (book.getTitle().matches(bookTitleToRemove)) {
                 repo.remove(book);
                 count++;
             }
