@@ -1,6 +1,4 @@
 package org.example.web.dto;
-
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class BookIdToRemove {

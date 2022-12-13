@@ -3,6 +3,7 @@ package org.example.web.controllers;
 import org.apache.log4j.Logger;
 import org.example.app.services.BookService;
 import org.example.web.dto.Book;
+import org.example.web.dto.BookAuthorToRemove;
 import org.example.web.dto.BookIdToRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -41,8 +42,6 @@ public class BookShelfControllers {
         return "book_shelf";
     }
 
-    //Придумать как добавить уведомление для пользователя о не корректном заполнении полей
-    //Если ввести буквы в поле size выдает ошибку и переводит на пустую страницу - устранить
     @PostMapping("/save")
     public String saveBook(@Valid Book book, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -76,12 +75,13 @@ public class BookShelfControllers {
     }
 
     @PostMapping("/removeByAuthor")
-    public String removeBookAuthor(@RequestParam(value = "bookAuthorToRemove") String bookAuthorToRemove) {
-        if (bookService.removeBookByAuthor(bookAuthorToRemove)) {
-            logger.info("remove book");
-            return "redirect:/books/shelf";
+    public String removeBookAuthor(@Valid BookAuthorToRemove bookAuthorToRemove, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("book", new Book());
+            model.addAttribute("bookList", bookService.getAllBooks());
+            return "book_shelf";
         } else {
-            logger.info("cannot remove book");
+            bookService.removeBookByAuthor(bookAuthorToRemove.getAuthor());
             return "redirect:/books/shelf";
         }
     }

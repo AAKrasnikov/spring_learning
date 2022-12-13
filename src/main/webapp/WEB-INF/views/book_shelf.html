@@ -35,13 +35,15 @@
             <tr>
                 <td>
                     <input type="text" placeholder="author" th:field="*{author}">
+                    <p th:if="${#fields.hasErrors('author')}">field Author cannot be empty</p>
                 </td>
                 <td>
                     <input type="text" placeholder="book_title" th:field="*{title}">
+                    <p th:if="${#fields.hasErrors('title')}">field Title cannot be empty</p>
                 </td>
                 <td>
                     <input type="text" placeholder="size (pages)" th:field="*{size}">
-                    <p th:if="${#fields.hasErrors()}">field value must be digit and less than 4 signs</p>
+                    <p th:if="${#fields.hasErrors('size')}">field value must be digit and less than 4 signs</p>
                 </td>
                 <td>
                     <input type="submit" value="save">
@@ -66,14 +68,17 @@
         </table>
     </form>
 
-    <form method="post" th:action="@{/books/removeByAuthor}">
+    <form method="post" th:action="@{/books/removeByAuthor}" th:object="${book}">
         <table>
             <tr>
                 <td>
-                    <input type="text" placeholder="author" th:name="bookAuthorToRemove">
+                    <input type="text" placeholder="author" th:field="*{author}">
                 </td>
                 <td>
                     <input type="submit" value="remove by author">
+                </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>Wrong id or not found</p>
                 </td>
             </tr>
         </table>
