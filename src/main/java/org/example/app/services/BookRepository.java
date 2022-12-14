@@ -50,7 +50,6 @@ public class BookRepository<T> implements ProjectRepository<Book>, ApplicationCo
         logger.info("store new book: " + book);
     }
 
-    //При организации удаления по 1 полю и наличии всех текущих кнопок, можно попробовать сокраить кол-во методов удаления.
     @Override
     public boolean removeItemById(Integer bookIdToRemove) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
@@ -67,54 +66,24 @@ public class BookRepository<T> implements ProjectRepository<Book>, ApplicationCo
         jdbcTemplete.update("DELETE FROM books WHERE author = :author", parameterSource);
         logger.info("remove book by author completed");
         return true;
-
-//        int count = 0;
-//        for (Book book : retreiveAll()) {
-//            if (book.getAuthor().matches(bookAuthorToRemove)) {
-//                repo.remove(book);
-//                count ++;
-//            }
-//        }
-//        if (count > 0) {
-//            logger.info("remove book by author completed: count = " + count);
-//            return true;
-//        } else {
-//            return false;
-//        }
     }
 
     @Override
     public boolean removeByTitle(String bookTitleToRemove) {
-        int count = 0;
-        for (Book book : retreiveAll()) {
-            if (book.getTitle().matches(bookTitleToRemove)) {
-                repo.remove(book);
-                count++;
-            }
-        }
-        if (count > 0) {
-            logger.info("remove book by author completed: count = " + count);
-            return true;
-        } else {
-            return false;
-        }
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("title", bookTitleToRemove);
+        jdbcTemplete.update("DELETE FROM books WHERE title = :title", parameterSource);
+        logger.info("remove book by title completed");
+        return true;
     }
 
     @Override
     public boolean removeBySize(Integer bookSizeToRemove) {
-        int count = 0;
-        for (Book book : retreiveAll()) {
-            if (book.getSize().equals(bookSizeToRemove)) {
-                repo.remove(book);
-                count++;
-            }
-        }
-        if (count > 0) {
-            logger.info("remove book by author completed: count = " + count);
-            return true;
-        } else {
-            return false;
-        }
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("size", bookSizeToRemove);
+        jdbcTemplete.update("DELETE FROM books WHERE size = :size", parameterSource);
+        logger.info("remove book by size completed");
+        return true;
     }
 
     @Override

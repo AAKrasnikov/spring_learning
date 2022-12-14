@@ -23,6 +23,7 @@
         th {
             text-align: left;
         }
+
         th, td {
             border-bottom: 1px solid #ddd;
         }
@@ -68,7 +69,7 @@
         </table>
     </form>
 
-    <form method="post" th:action="@{/books/removeByAuthor}" th:object="${book}">
+    <form method="post" th:action="@{/books/removeByAuthor}" th:object="${bookAuthorToRemove}">
         <table>
             <tr>
                 <td>
@@ -84,27 +85,33 @@
         </table>
     </form>
 
-    <form method="post" th:action="@{/books/removeByTitle}">
+    <form method="post" th:action="@{/books/removeByTitle}" th:object="${bookTitleToRemove}">
         <table>
             <tr>
                 <td>
-                    <input type="text" placeholder="title" th:name="bookTitleToRemove">
+                    <input type="text" placeholder="title" th:field="*{title}">
                 </td>
                 <td>
                     <input type="submit" value="remove by title">
+                </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>Wrong id or not found</p>
                 </td>
             </tr>
         </table>
     </form>
 
-    <form method="post" th:action="@{/books/removeBySize}">
+    <form method="post" th:action="@{/books/removeBySize}" th:object="${bookSizeToRemove}">
         <table>
             <tr>
                 <td>
-                    <input type="text" placeholder="size" th:name="bookSizeToRemove">
+                    <input type="text" placeholder="size" th:field="*{size}">
                 </td>
                 <td>
                     <input type="submit" value="remove by size">
+                </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>Wrong id or not found</p>
                 </td>
             </tr>
         </table>
