@@ -32,10 +32,6 @@ public class BookShelfControllers {
     public String books(Model model) {
         logger.info(this.toString());
         model.addAttribute("book", new Book());
-        model.addAttribute("bookIdToRemove", new BookIdToRemove());
-        model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-        model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-        model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
         model.addAttribute("bookList", bookService.getAllBooks());
         return "book_shelf";
     }
@@ -62,6 +58,7 @@ public class BookShelfControllers {
     public String removeBook(@Valid BookIdToRemove bookIdToRemove, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("book", new Book());
+            model.addAttribute("bookIdToRemove", new BookIdToRemove());
             model.addAttribute("bookList", bookService.getAllBooks());
             return "book_shelf";
         } else {
@@ -74,6 +71,7 @@ public class BookShelfControllers {
     public String removeBookAuthor(@Valid BookAuthorToRemove bookAuthorToRemove, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("book", new Book());
+            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
             model.addAttribute("bookList", bookService.getAllBooks());
             return "book_shelf";
         } else {
@@ -86,6 +84,7 @@ public class BookShelfControllers {
     public String removeBookTitle(@Valid BookTitleToRemove bookTitleToRemove, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()){
             model.addAttribute("book", new Book());
+            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
             model.addAttribute("bookList", bookService.getAllBooks());
             return "book_shelf";
         } else {
@@ -98,6 +97,7 @@ public class BookShelfControllers {
     public String removeBookSize(@Valid BookSizeToRemove bookSizeToRemove, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("book", new Book());
+            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
             model.addAttribute("bookList", bookService.getAllBooks());
             return "book_shelf";
         } else {
