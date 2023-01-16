@@ -32,6 +32,10 @@ public class BookShelfControllers {
     public String books(Model model) {
         logger.info(this.toString());
         model.addAttribute("book", new Book());
+        model.addAttribute("bookIdToRemove", new BookIdToRemove());
+        model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
+        model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
+        model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
         model.addAttribute("bookList", bookService.getAllBooks());
         return "book_shelf";
     }
@@ -40,6 +44,10 @@ public class BookShelfControllers {
     public String saveBook(@Valid Book book, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("book", book);
+            model.addAttribute("bookIdToRemove", new BookIdToRemove());
+            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
+            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
+            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
             model.addAttribute("bookList", bookService.getAllBooks());
             return "book_shelf";
         } else {
@@ -58,7 +66,9 @@ public class BookShelfControllers {
     public String removeBook(@Valid BookIdToRemove bookIdToRemove, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
+            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
+            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
+            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
             model.addAttribute("bookList", bookService.getAllBooks());
             return "book_shelf";
         } else {
@@ -71,7 +81,9 @@ public class BookShelfControllers {
     public String removeBookAuthor(@Valid BookAuthorToRemove bookAuthorToRemove, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("book", new Book());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
+            model.addAttribute("bookIdToRemove", new BookIdToRemove());
+            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
+            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
             model.addAttribute("bookList", bookService.getAllBooks());
             return "book_shelf";
         } else {
@@ -84,7 +96,9 @@ public class BookShelfControllers {
     public String removeBookTitle(@Valid BookTitleToRemove bookTitleToRemove, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()){
             model.addAttribute("book", new Book());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
+            model.addAttribute("bookIdToRemove", new BookIdToRemove());
+            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
+            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
             model.addAttribute("bookList", bookService.getAllBooks());
             return "book_shelf";
         } else {
@@ -97,7 +111,9 @@ public class BookShelfControllers {
     public String removeBookSize(@Valid BookSizeToRemove bookSizeToRemove, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("book", new Book());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookIdToRemove", new BookIdToRemove());
+            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
+            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
             model.addAttribute("bookList", bookService.getAllBooks());
             return "book_shelf";
         } else {
@@ -111,21 +127,25 @@ public class BookShelfControllers {
         String name = file.getOriginalFilename();
         byte[] bytes = file.getBytes();
 
-        //create dir
-        String rootPath = System.getProperty("catalina.home");
-        File dir = new File(rootPath + File.separator + "external_uploads");
-        if (!dir.exists()) {
-            dir.mkdirs();
+        if(bytes.length == 0) {
+            throw new BookShelfUploadFileException("you cannot load an empty string");
+        } else {
+            //create dir for save
+            String rootPath = System.getProperty("catalina.home");
+            File dir = new File(rootPath + File.separator + "external_uploads");
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            //create file
+            File serverFile = new File(dir.getAbsolutePath() + File.separator + name);
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+
+            logger.info("new file saved at: " + serverFile.getAbsolutePath());
+            return "redirect:/books/shelf";
         }
-
-        //create file
-        File serverFile = new File(dir.getAbsolutePath() + File.separator + name);
-        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-        stream.write(bytes);
-        stream.close();
-
-        logger.info("new file saved at: " + serverFile.getAbsolutePath());
-        return "redirect:/books/shelf";
     }
 
     @ExceptionHandler(BookShelfUploadFileException.class)
